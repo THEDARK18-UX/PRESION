@@ -1,54 +1,60 @@
 import streamlit as st
 
-st.set_page_config(page_title="Calculadora de Presión", page_icon="🧪", layout="centered")
+st.set_page_config(page_title="Calculadora Ley de Gases Ideales", page_icon="🧪", layout="centered")
 
-st.title("🧪 Calculadora de Presión")
+st.title("💨 Calculadora Química: Ley de Gases Ideales")
 st.markdown("""
-Esta aplicación interactiva te ayudará a calcular la presión usando la fórmula general:
+Esta aplicación te permite calcular cualquiera de las variables de la ley de los gases ideales:
 
-$$ P = \frac{F}{A} $$
+$$ PV = nRT $$
 
 Donde:
-- **P** es la presión (en pascales, Pa)
-- **F** es la fuerza (en newtons, N)
-- **A** es el área (en metros cuadrados, m²)
+- **P**: presión (atmósferas, atm)
+- **V**: volumen (litros, L)
+- **n**: cantidad de sustancia (mol)
+- **R**: constante universal de los gases (0.0821 atm·L/mol·K)
+- **T**: temperatura (Kelvin, K)
 """)
 
-st.header("🔢 Selecciona el tipo de cálculo")
+st.header("🔍 ¿Qué variable deseas calcular?")
 
-calculo_tipo = st.radio(
-    "¿Qué deseas calcular?",
-    ["Presión (P)", "Fuerza (F)", "Área (A)"]
+opcion = st.radio(
+    "Selecciona una variable:",
+    ["Presión (P)", "Volumen (V)", "Cantidad de sustancia (n)", "Temperatura (T)"]
 )
 
-if calculo_tipo == "Presión (P)":
-    st.subheader("Calcular Presión")
-    fuerza = st.number_input("Ingresa la fuerza (N):", min_value=0.0, format="%0.2f")
-    area = st.number_input("Ingresa el área (m²):", min_value=0.0001, format="%0.4f")
+R = 0.0821  # atm·L/mol·K
+
+if opcion == "Presión (P)":
+    V = st.number_input("Ingresa el volumen (L):", min_value=0.001, format="%0.3f")
+    n = st.number_input("Ingresa la cantidad de sustancia (mol):", min_value=0.001, format="%0.3f")
+    T = st.number_input("Ingresa la temperatura (K):", min_value=0.01, format="%0.2f")
     if st.button("Calcular presión"):
-        presion = fuerza / area
-        st.success(f"La presión es {presion:.2f} Pa")
+        P = (n * R * T) / V
+        st.success(f"La presión es {P:.3f} atm")
 
-elif calculo_tipo == "Fuerza (F)":
-    st.subheader("Calcular Fuerza")
-    presion = st.number_input("Ingresa la presión (Pa):", min_value=0.0, format="%0.2f")
-    area = st.number_input("Ingresa el área (m²):", min_value=0.0001, format="%0.4f")
-    if st.button("Calcular fuerza"):
-        fuerza = presion * area
-        st.success(f"La fuerza es {fuerza:.2f} N")
+elif opcion == "Volumen (V)":
+    P = st.number_input("Ingresa la presión (atm):", min_value=0.001, format="%0.3f")
+    n = st.number_input("Ingresa la cantidad de sustancia (mol):", min_value=0.001, format="%0.3f")
+    T = st.number_input("Ingresa la temperatura (K):", min_value=0.01, format="%0.2f")
+    if st.button("Calcular volumen"):
+        V = (n * R * T) / P
+        st.success(f"El volumen es {V:.3f} L")
 
-elif calculo_tipo == "Área (A)":
-    st.subheader("Calcular Área")
-    presion = st.number_input("Ingresa la presión (Pa):", min_value=0.0, format="%0.2f")
-    fuerza = st.number_input("Ingresa la fuerza (N):", min_value=0.0, format="%0.2f")
-    if st.button("Calcular área"):
-        area = fuerza / presion if presion != 0 else 0
-        if presion != 0:
-            st.success(f"El área es {area:.4f} m²")
-        else:
-            st.error("La presión no puede ser cero para este cálculo.")
+elif opcion == "Cantidad de sustancia (n)":
+    P = st.number_input("Ingresa la presión (atm):", min_value=0.001, format="%0.3f")
+    V = st.number_input("Ingresa el volumen (L):", min_value=0.001, format="%0.3f")
+    T = st.number_input("Ingresa la temperatura (K):", min_value=0.01, format="%0.2f")
+    if st.button("Calcular cantidad de sustancia"):
+        n = (P * V) / (R * T)
+        st.success(f"La cantidad de sustancia es {n:.4f} mol")
 
-st.markdown("""
----
-✅ Aplicación creada con ❤️ por Huma Supay
-""")
+elif opcion == "Temperatura (T)":
+    P = st.number_input("Ingresa la presión (atm):", min_value=0.001, format="%0.3f")
+    V = st.number_input("Ingresa el volumen (L):", min_value=0.001, format="%0.3f")
+    n = st.number_input("Ingresa la cantidad de sustancia (mol):", min_value=0.001, format="%0.3f")
+    if st.button("Calcular temperatura"):
+        T = (P * V) / (n * R)
+        st.success(f"La temperatura es {T:.2f} K")
+
+st.markdown
